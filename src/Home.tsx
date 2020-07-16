@@ -53,17 +53,19 @@ class HomeScreen extends React.Component {
     // }
 
     //console.log를 해보니 nextProps는 object 였고 prevStates는 interface에서 설정한 State.
-    static getDerivedStateFromProps(nextProps: object, prevState: State) {
+    static getDerivedStateFromProps(nextProps: Object, prevState: State) {
         console.log("getDerivedStateFromProps 실행됨.");
 
         //첫 실행에서 undefined인 경우 이 함수 실행을 막는다.
         //또는 장소를 눌러 위치를 이동시킬 때, 이 함수 실행을 막는다.
         if(nextProps.route.params === undefined){
             console.log("처음 실행시 받는 정보는 undefined. 여기서 걸렀다.");
+
             return null;
         }
         if(!nextProps.route.params.canIAdd){
             console.log("장소 눌러 위치 이동시 state 변경되며, 이 때 state 변경 없어야 함.");
+            console.log(nextProps);
             return null;
         }
         else{
@@ -85,10 +87,6 @@ class HomeScreen extends React.Component {
         }
     }
 
-    shouldComponentUpdate(newProps, newState){
-        console.log("\nshouldComponentUpdate called!");
-        return true;
-    } 
 
 
     state:State = {
