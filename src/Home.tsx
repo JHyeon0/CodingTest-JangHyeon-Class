@@ -1,19 +1,21 @@
-import React, {Component, useRef} from 'react';
-import { TouchableOpacity, Text, View, Button, FlatList } from 'react-native';
+import React from 'react';
+import { TouchableOpacity, Text, View, FlatList } from 'react-native';
 import { styles } from './stylesheet'
 import MapView, { Marker } from 'react-native-maps';
-import RBSheet from "react-native-raw-bottom-sheet";
 
 
-
-interface placeDataObject{
-    key: string;
-    placeName: string;
+interface coordinate{
     latitude: number;
     longitude: number;
 }
 
-interface coordinate{
+interface placeDataObject{
+    key: string;
+    placeName: string;
+    coordinate: coordinate;
+}
+
+interface locationData{
     latitude: number;
     longitude: number;
     latitudeDelta: number;
@@ -22,7 +24,8 @@ interface coordinate{
 
 interface State{
     placeDataArray: placeDataObject[];
-    locationData: coordinate;
+    locationData: locationData;
+    showList: boolean;
 }
 
 const defaultLocation = {
@@ -32,25 +35,13 @@ const defaultLocation = {
     longitudeDelta: 0.015,
 }
 
-////////
-let bool:boolean= true;
-
-
 class HomeScreen extends React.Component {
     constructor(props: object, nextProps: object){
         super(props);
-
         console.log("\nnextProps은 아래와 같다.")
         console.log(nextProps);
     }
 
-
-
-    // componentDidMount() {
-    //     this.setState({
-    //       testName: this.props.route.params.testString,
-    //     });
-    // }
 
     //console.log를 해보니 nextProps는 object 였고 prevStates는 interface에서 설정한 State.
     static getDerivedStateFromProps(nextProps: Object, prevState: State) {
@@ -71,11 +62,14 @@ class HomeScreen extends React.Component {
         else{
             console.log("홈으로 받은 정보는 아래와 같다.")
 
+            const newCoordinate:coordinate = {
+                latitude: nextProps.route.params.latitude,
+                longitude: nextProps.route.params.longitude,
+            }
             const newPlaceData:placeDataObject = {
                 key: nextProps.route.params.key,
                 placeName: nextProps.route.params.placeName,
-                latitude: nextProps.route.params.latitude,
-                longitude: nextProps.route.params.longitude,
+                coordinate: newCoordinate,
             }
             console.log(newPlaceData);
             
@@ -90,25 +84,35 @@ class HomeScreen extends React.Component {
 
 
     state:State = {
+        
         placeDataArray:[
-            {
-                key: '1',
-                placeName: 'place1',
-                latitude: 37.276162,
-                longitude: 127.000055,
-            },
-            {
-                key: '2',
-                placeName: 'place2',
-                latitude: 37.256162,
-                longitude: 127.000055,
-            },
-            {
-                key: '3',
-                placeName: '수원역',
-                latitude: 37.266162,
-                longitude: 127.000055,
-            }
+            //////////// TEST INFO FOR DEBUGGING ///////////
+            // {
+            //     key: '1',
+            //     placeName: 'place1',
+            //     coordinate: {
+            //         latitude: 37.270162,
+            //         longitude: 127.002055,
+            //     }
+                
+            // },
+            // {
+            //     key: '2',
+            //     placeName: 'place2',
+            //     coordinate: {
+            //         latitude: 37.262162,
+            //         longitude: 127.001055,
+            //     }
+                
+            // },
+            // {
+            //     key: '3',
+            //     placeName: '수원역',
+            //     coordinate: {
+            //         latitude: 37.266162,
+            //         longitude: 127.000055,
+            //     }
+            // }
         ],
         locationData:{
             latitude: 37.266162,
@@ -116,35 +120,23 @@ class HomeScreen extends React.Component {
             latitudeDelta: 0.015,
             longitudeDelta: 0.015,
         },
+        showList: false,
     }
     
 
     
     render() {
-        // const { key, placeName, latitude, longitude } = this.props.route.params;
-        //debugHandler should be removed!
+
+        //////////////////////////////////////////////////////////////////////
+        // debugHandler should be removed!
         const debugHandler = () => {
-            console.log("\nDEBUG LOG...");
-            this.setState({ locationData: {
-                latitude: 37.25,
-                longitude: 127.000055,
-                latitudeDelta: 0.015,
-                longitudeDelta: 0.015,
-            } })
-
-            
-            console.log(`state.locationData's latitude is ${this.state.locationData.latitude}`)
-            //state 변화는 여기서 즉시 일어나지 않는다! 함수가 끝나면 일어남.
-        }
-
-        const debugHandler2 = () => {
             console.log("\n@@@@@ CHECK CURRENT STATE @@@@@");
             console.log(this.state);
             console.log("\n@@@@@ CHECK CURRENT STATE.placeDataArray @@@@@");
             console.log(this.state.placeDataArray);
         }
-        //debugHandler should be removed!
-        /////////////////////////////////
+        // debugHandler should be removed!
+        //////////////////////////////////////////////////////////////////////
 
         // 장소의 이름을 누르면 그 장소로 이동한다.
         // render()는 state가 변할 경우 다시 rendering하는 것을 이용.
@@ -164,72 +156,63 @@ class HomeScreen extends React.Component {
                     initialRegion={this.state.locationData}
                     region={this.state.locationData}
                 >
+                    {this.state.placeDataArray.map(marker => (
 
-                        <Marker coordinate={this.state.locationData }/>
+                        <Marker coordinate={marker.coordinate}/>
+
+                    ))}
 
                 </MapView>
 
-                <View style={styles.placeListContainer}>
+                <TouchableOpacity style={styles.openPlaceListButton} 
+                    onPress={() => {this.state.showList = !this.state.showList; this.forceUpdate()}}
+                    activeOpacity={1}
+                >
+                    <Text>열기</Text>
+                </TouchableOpacity>
+
+                <View style={this.state.showList ? styles.placeListContainer : styles.hideListContainer}>
+                    <TouchableOpacity style={styles.closePlaceListButton} onPress={() => {this.state.showList = !this.state.showList; this.forceUpdate()}}>
+                        <Text>닫기</Text>
+                    </TouchableOpacity>
                     <FlatList 
+                        ListEmptyComponent={
+                            <View style={styles.emptyList}>
+                                <Text>장소가 없습니다.</Text>
+                            </View>
+                        }
                         data={this.state.placeDataArray}
                         renderItem={({ item }) => (
-                        <TouchableOpacity style={styles.placeList} onPress={() => placeNamePressHandler(item.latitude, item.longitude)}>
+                        <TouchableOpacity style={styles.placeList} onPress={() => 
+                            placeNamePressHandler(item.coordinate.latitude, item.coordinate.longitude)}
+                        >
                             <Text>{item.placeName}</Text>
                         </TouchableOpacity>
                         )} 
                     />
                 </View>
 
-                <TouchableOpacity style={styles.addPlaceButton_Home} onPress={() => this.props.navigation.navigate('SelectPlaceScreen')}>
+                <TouchableOpacity style={styles.addPlaceButton_Home} onPress={() => {
+
+                    // 기능개선 ///////////////////////////
+                    // 현재 기능 : pressed 했을 때 this.state.locationData가 업데이트 됨.
+                    // 사용자가 임의로 지도를 옮겼을 때 this.state.locationData가 업데이트 되면 좋겠음.
+
+                    this.props.navigation.navigate('SelectPlaceScreen', 
+                        { 
+                            currentLatitude: this.state.locationData.latitude,
+                            currentLongitude: this.state.locationData.longitude,
+                            currentLatitudeDelta: this.state.locationData.longitudeDelta,
+                            currentLongitudeDelta: this.state.locationData.latitudeDelta,
+                        })
+                }}
+                >
                     <Text>장소 추가</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.debugButton2} onPress={debugHandler2}>
-                    <Text>debug2</Text>
+                <TouchableOpacity style={styles.debugButton2} onPress={debugHandler}>
+                    <Text>debug</Text>
                 </TouchableOpacity>
-
-                {/*=========================================================================================================
-                    아래 주석 코드 : on/off bottom sheet 구현
-                   ---------------------------------------------------------------------------------------------------------                             
-                    RBSheet package를 사용하여 on/off bottom sheet를 구현하는 코드임.
-                    그러나 state는 바뀜에도 불구하고, 보이는 list가 업데이트 되지 않는 문제 발생. 
-                    아래 코드 중 <FlatList />를 그대로 가져와 위 코드로 구현했을 때, list 업데이트 문제 없음.
-                ===========================================================================================================*/}
-                {/* <View>
-                    <TouchableOpacity style={styles.openPlaceListButton} onPress={() => { 
-                        this.RBSheet.open();
-                        this.forceUpdate();
-                        }}>
-                        <Text>열기</Text>
-                    </TouchableOpacity>
-                    <RBSheet
-                    ref={ref => {
-                        this.RBSheet = ref;
-                    }}
-                    customStyles={{wrapper: {backgroundColor: "transparent"}}}
-                    openDuration={0}
-                    closeOnPressMask={false}
-                    >
-                        <TouchableOpacity style={styles.closePlaceListButton} onPress={() =>  this.RBSheet.close() }>
-                            <Text>닫기</Text>
-                        </TouchableOpacity>
-                        <View >
-                            <FlatList 
-                                
-                                data={this.state.placeDataArray}
-                                extraData={this.state.placeDataArray}
-                                renderItem={({ item }) => (
-                                <TouchableOpacity style={styles.placeList} onPress={() => placeNamePressHandler(item.latitude, item.longitude)}>
-                                    <Text>{item.placeName}</Text>
-                                </TouchableOpacity>
-                                )} 
-                            />
-                        </View>
-                    </RBSheet>
-                </View> */}
-
-
-
 
             </View>
         );

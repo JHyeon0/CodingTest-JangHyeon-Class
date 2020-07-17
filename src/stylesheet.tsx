@@ -15,6 +15,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    hideListContainer: {
+        width: 0,
+        height: 0,
+    },
+    emptyList: {
+        marginTop: Dimensions.get("window").height*0.10,
+    },
 
 
     openPlaceListButton: {

@@ -2,17 +2,46 @@ import React, {Component} from 'react';
 import { TextInput, Text, View,TouchableOpacity } from 'react-native';
 import { styles } from './stylesheet'
 
-// HomeScreen으로 navigate할 때 placeName, latitude, longtitude 모두 넘겨주어야 함.
+// HomeScreen으로 navigate할 때 placeName, latitude, longitude 모두 넘겨주어야 함.
 
 interface State{
+    key: string;
     newPlaceName: string;
+    latitude: number;
+    longitude: number;
 }
 
 class HomeScreen extends Component{
     state:State = {
+        key: '',
         newPlaceName: '',
+        latitude: 37.286162,
+        longitude: 127.005055,
     }
 
+    static getDerivedStateFromProps(nextProps: Object, prevState: State) {
+        console.log("Add Place에서 getDerivedStateFromProps 실행됨.");
+
+
+        //////////////////WARNING!!!!///////////////////////
+        ////////////TEXTINPUT 입력중에 계속 이 함수 실행됨////
+        ////////////////////////////////////////////////////
+
+        //첫 실행에서 undefined인 경우 이 함수 실행을 막는다.
+        if(nextProps.route.params === undefined){
+            console.log("undefined. 여기서 걸렀다.");
+            return null;
+        }
+        else{
+            console.log("받아온 marker coordinate 정보는 아래와 같다.");
+            console.log(`${nextProps.route.params.latitudeInfo} , ${nextProps.route.params.longitudeInfo}`);
+
+            const markerLatitude:number = nextProps.route.params.latitudeInfo;
+            const markerLongitude: number = nextProps.route.params.longitudeInfo;
+
+            return { latitude: markerLatitude, longitude: markerLongitude};
+        }
+    }
 
     render(){
         
@@ -25,10 +54,10 @@ class HomeScreen extends Component{
 
             //canIAdd는 getDerivedStateFromProps실행을 1회만 하기 위함이다.
             this.props.navigation.navigate('HomeScreen', {
-                key: newPlaceName,
+                key: newPlaceName + this.state.latitude.toString(),
                 placeName: newPlaceName,
-                latitude: 37.266162,
-                longitude: 127.000055,
+                latitude: this.state.latitude,
+                longitude: this.state.longitude,
                 canIAdd: true,
             });
         }
@@ -49,6 +78,9 @@ class HomeScreen extends Component{
                 <Text>Hello World! AddPlace.</Text>
                 <TouchableOpacity style={styles.addPlaceButton} onPress={pressSaveHandler}>
                     <Text>저장</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.debugButton2} onPress={() =>  console.log(this.state)}>
+                    <Text>debug2</Text>
                 </TouchableOpacity>
             </View>
         )
