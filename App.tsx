@@ -7,9 +7,7 @@ import SelectPlaceScreen from './src/SelctPlace'
 import AddPlaceScreen from './src/AddPlace'
 
 type StackParamList = {
-  HomeScreen: {
-
-  }
+  HomeScreen: undefined;
   AddPlaceScreen: undefined;
   SelectPlaceScreen: undefined;
   ListPlaceScreen: undefined;

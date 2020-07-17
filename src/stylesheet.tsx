@@ -1,12 +1,24 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
 const styles = StyleSheet.create({
+
+    ////////////   General   ////////////
+    mapStyle: {
+        width: Dimensions.get("window").width,
+        height: Dimensions.get("window").height,
+    },
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    placeListContainer: {
+    inputPlaceName:{
+        padding: 10,
+        margin: 10,
+    },
+
+    ////////////   Place List View   ////////////
+    showListContainer: {
         position: 'absolute',
         width: Dimensions.get("window").width,
         height: Dimensions.get("window").height*0.3,
@@ -22,26 +34,6 @@ const styles = StyleSheet.create({
     emptyList: {
         marginTop: Dimensions.get("window").height*0.10,
     },
-
-
-    openPlaceListButton: {
-
-        position: 'absolute', 
-        backgroundColor: 'white',
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height*0.06,
-        bottom: 0,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    closePlaceListButton: {
-        backgroundColor: '#FFBBAC',
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height*0.06,
-        top: 0,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     placeList: {
         backgroundColor: 'white',
         width: Dimensions.get("window").width,
@@ -54,39 +46,40 @@ const styles = StyleSheet.create({
     },
 
 
+    ////////////   Button   ////////////
+    openListButton: {
+        position: 'absolute', 
+        backgroundColor: 'white',
+        width: Dimensions.get("window").width,
+        height: Dimensions.get("window").height*0.06,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    closeListButton: {
+        backgroundColor: '#FFBBAC',
+        width: Dimensions.get("window").width,
+        height: Dimensions.get("window").height*0.06,
+        top: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     addPlaceButton_Home: {
-
         backgroundColor: '#FFBBAC',
         color: 'white',
         padding: 10,
-        position: 'absolute',//use absolute position to show button on top of the map
-        top: '80%', //for center align
-        alignSelf: 'flex-end' //for align to right
+        position: 'absolute',
+        top: '80%',
+        alignSelf: 'flex-end'
     },
-
-    //////////////////////////////////////////////////////////
-    // temporary style have to REMOVE!! ////////////////////    
-    debugButton: {
-
+    cancelAddButton: {
         backgroundColor: '#FFBBAC',
         color: 'white',
         padding: 10,
-        position: 'absolute',//use absolute position to show button on top of the map
-        top: '60%', //for center align
-        alignSelf: 'flex-end' //for align to right
+        position: 'absolute',
+        top: '80%',
+        alignSelf: 'flex-end'
     },
-    debugButton2: {
-
-        backgroundColor: '#FFBBAC',
-        color: 'white',
-        padding: 10,
-        position: 'absolute',//use absolute position to show button on top of the map
-        top: '40%', //for center align
-        alignSelf: 'flex-end' //for align to right
-    },
-    // temporary style have to REMOVE!! ////////////////////
-    //////////////////////////////////////////////////////////
-
     addPlaceButton: {
         backgroundColor: '#FFBBAC',
         color: 'white',
@@ -98,8 +91,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-
-    backToHomeButton: {
+    saveButton: {
+        backgroundColor: '#FFBBAC',
+        color: 'white',
+        padding: 10,
+        width: Dimensions.get("window").width,
+        height: Dimensions.get("window").height*0.06,
+        bottom: 0,
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    cancelSaveButton: {
         backgroundColor: '#FFBBAC',
         color: 'white',
         padding: 10,
@@ -111,14 +114,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
-    inputPlaceName:{
-        padding: 10,
-        margin: 10,
-    },
-    mapStyle: {
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height,
-    },
+
  });
 
 export { styles };
