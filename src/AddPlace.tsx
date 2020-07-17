@@ -5,16 +5,23 @@ import { styles } from './stylesheet'
 // HomeScreen으로 navigate할 때 placeName, latitude, longitude 모두 넘겨주어야 함.
 
 interface State{
-    key: string;
     newPlaceName: string;
     latitude: number;
     longitude: number;
 }
+interface Object{
+    route: Object;
+    params: Object;
+    latitudeInfo: number;
+    longitudeInfo: number;
+}
+interface Props {
+    navigation: any;
+}
 
-class HomeScreen extends Component{
+class HomeScreen extends Component<Props>{
 
     state:State = {
-        key: '',
         newPlaceName: '',
         latitude: 37.286162,
         longitude: 127.005055,
@@ -39,7 +46,6 @@ class HomeScreen extends Component{
         //저장을 누르면 HomeScreen으로 이동하며 장소에 대한 정보도 전달.
         const pressSaveHandler = () => {
             this.props.navigation.navigate('HomeScreen', {
-                key: this.state.newPlaceName + this.state.latitude.toString(),
                 placeName: this.state.newPlaceName,
                 latitude: this.state.latitude,
                 longitude: this.state.longitude,

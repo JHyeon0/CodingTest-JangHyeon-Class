@@ -18,8 +18,18 @@ interface State{
     coordinate: Coordinate;
     region: region;
 }
-
-class HomeScreen extends Component{
+interface Object{
+    route: Object;
+    params: Object;
+    currentLatitude: number;
+    currentLongitude: number;
+    currentLatitudeDelta: number;
+    currentLongitudeDelta: number;
+}
+interface Props {
+    navigation: any;
+}
+class HomeScreen extends Component<Props>{
 
     state: State = {
         coordinate: {

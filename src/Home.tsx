@@ -1,8 +1,8 @@
 import React from 'react';
-import { TouchableOpacity, Text, View, FlatList } from 'react-native';
+import { TouchableOpacity, Text, View, FlatList, Constructor } from 'react-native';
 import { styles } from './stylesheet'
 import MapView, { Marker } from 'react-native-maps';
-
+import Moment, { moment } from 'react-moment';
 
 interface Coordinate{
     latitude: number;
@@ -23,11 +23,28 @@ interface State{
     placeDataArray: placeData[];
     locationData: locationData;
     showList: boolean;
+    currentTime: string;
+}
+interface HomeScreen{
+    timerID: number;
+    // map: MapView | null;
+    map: any;
+}
+interface Object{
+    route: Object;
+    params: Object;
+    canIAdd: boolean;
+    latitude: number;
+    longitude: number;
+    key: string;
+    placeName: string;
+}
+interface Props {
+    navigation: any;
 }
 
+class HomeScreen extends React.Component<Props> {
 
-class HomeScreen extends React.Component {
-    
     // state 
     state:State = {        
         placeDataArray:[],
@@ -38,11 +55,13 @@ class HomeScreen extends React.Component {
             longitudeDelta: 0.015,
         },
         showList: false,
+        currentTime: Date().toLocaleString(),
     }
 
     // props를 전달받거나, state가 변할 경우 이 함수를 실행한다.
     // AddPlaceScreen에서 받아온 placeData를 state에 업데이트 시킨다.
     static getDerivedStateFromProps(nextProps: Object, prevState: State) {
+        
         //첫 실행에서 route.params가 undefined인 경우 이 함수 실행을 막는다.
         //또는 장소 이름을 누르고 state.locationData 변할 때 이 함수 실행을 막는다.
         if(nextProps.route.params === undefined || !nextProps.route.params.canIAdd){
@@ -50,13 +69,12 @@ class HomeScreen extends React.Component {
         }
         else{
             nextProps.route.params.canIAdd=false;
-
             const newCoordinate:Coordinate = {
                 latitude: nextProps.route.params.latitude,
                 longitude: nextProps.route.params.longitude,
             }
             const newPlaceData:placeData = {
-                key: nextProps.route.params.key,
+                key: Date(),
                 placeName: nextProps.route.params.placeName,
                 coordinate: newCoordinate,
             }
@@ -70,12 +88,14 @@ class HomeScreen extends React.Component {
 
         // 장소의 이름을 누르면 그 장소로 이동한다.
         const PlaceNamePressHandler = (newlatitude: number, newlongitude: number) => {
-            this.setState({ locationData: {
+            const pressedPlaceName:locationData = {
                 latitude: newlatitude,
                 longitude: newlongitude,
                 latitudeDelta: 0.015,
                 longitudeDelta: 0.015,
-            } })
+            }
+            this.setState({ locationData: pressedPlaceName })
+            this.map.animateToRegion(pressedPlaceName, 500)
         }
 
         // 장소 추가 버튼을 누르면 화면 전환. 현재 위치에 대한 정보 전달.
@@ -90,16 +110,16 @@ class HomeScreen extends React.Component {
 
         // 장소 리스트 화면 on/off 토글러.
         const listViewToggler = () => {
-            this.state.showList = !this.state.showList; 
+            this.state.showList = !this.state.showList;
             this.forceUpdate();
         }
         
         return (
             <View>
                 <MapView
+                    ref={(map)=>{this.map = map;}}
                     style={styles.mapStyle}
                     initialRegion={this.state.locationData}
-                    region={this.state.locationData} 
                 >
                     {this.state.placeDataArray.map(marker => (
                         <Marker coordinate={marker.coordinate}/>
@@ -131,15 +151,17 @@ class HomeScreen extends React.Component {
                                 onPress={() => 
                                     PlaceNamePressHandler(item.coordinate.latitude, item.coordinate.longitude)} >
                                 <Text>{item.placeName}</Text>
+                                <Moment fromNow element={Text}>{item.key}</Moment>
                             </TouchableOpacity>
                             )} 
                     />
                 </View>
 
                 <TouchableOpacity style={styles.addPlaceButton_Home} onPress={AddPlacePressHandler} >
-                    <Text>장소 추가</Text>
+                                <Text>추가하기</Text>
                 </TouchableOpacity>
-
+                
+                
             </View>
         );
     }
