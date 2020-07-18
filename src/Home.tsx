@@ -1,8 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, Text, View, FlatList, Constructor } from 'react-native';
+import { TouchableOpacity, Text, View, FlatList } from 'react-native';
+import { NavigationContainer, RouteProp } from '@react-navigation/native';
 import { styles } from './stylesheet'
 import MapView, { Marker } from 'react-native-maps';
-import Moment, { moment } from 'react-moment';
+import Moment from 'react-moment';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 interface Coordinate{
     latitude: number;
@@ -42,6 +44,11 @@ interface Object{
 interface Props {
     navigation: any;
 }
+
+// interface Props {
+//     navigation: StackNavigationProp<StackParamList>;
+//     route: RouteProp<>
+// }
 
 class HomeScreen extends React.Component<Props> {
 

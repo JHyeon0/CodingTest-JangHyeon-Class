@@ -75,7 +75,7 @@ class HomeScreen extends Component<Props>{
                 longitudeInfo: this.state.coordinate.longitude,
                 })
         }
-
+        
         return(
             <View>
                 <MapView 

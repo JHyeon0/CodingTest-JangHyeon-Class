@@ -1,11 +1,14 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
+const windowWidth:number = Dimensions.get("window").width;
+const windowHeight:number = Dimensions.get("window").height;
+
 const styles = StyleSheet.create({
 
     ////////////   General   ////////////
     mapStyle: {
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height,
+        width: windowWidth,
+        height: windowHeight,
     },
     container: {
         flex: 1,
@@ -20,8 +23,8 @@ const styles = StyleSheet.create({
     ////////////   Place List View   ////////////
     showListContainer: {
         position: 'absolute',
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height*0.3,
+        width: windowWidth,
+        height: windowHeight*0.3,
         backgroundColor: 'white',
         bottom: 0,
         alignItems: 'center',
@@ -32,12 +35,12 @@ const styles = StyleSheet.create({
         height: 0,
     },
     emptyList: {
-        marginTop: Dimensions.get("window").height*0.10,
+        marginTop: windowHeight*0.10,
     },
     placeList: {
         backgroundColor: 'white',
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height*0.06,
+        width: windowWidth,
+        height: windowHeight*0.06,
         borderStyle: 'solid',
         borderColor: 'rgb(230, 230, 230)',
         borderBottomWidth: 1,
@@ -50,16 +53,16 @@ const styles = StyleSheet.create({
     openListButton: {
         position: 'absolute', 
         backgroundColor: 'white',
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height*0.06,
+        width: windowWidth,
+        height: windowHeight*0.06,
         bottom: 0,
         alignItems: 'center',
         justifyContent: 'center',
     },
     closeListButton: {
         backgroundColor: '#FFBBAC',
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height*0.06,
+        width: windowWidth,
+        height: windowHeight*0.06,
         top: 0,
         alignItems: 'center',
         justifyContent: 'center',
@@ -84,8 +87,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFBBAC',
         color: 'white',
         padding: 10,
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height*0.06,
+        width: windowWidth,
+        height: windowHeight*0.06,
         bottom: 0,
         position: 'absolute',
         alignItems: 'center',
@@ -95,8 +98,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFBBAC',
         color: 'white',
         padding: 10,
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height*0.06,
+        width: windowWidth,
+        height: windowHeight*0.06,
         bottom: 0,
         position: 'absolute',
         alignItems: 'center',
@@ -106,8 +109,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFBBAC',
         color: 'white',
         padding: 10,
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height*0.2,
+        width: windowWidth,
+        height: windowHeight*0.2,
         top: 0,
         position: 'absolute',
         alignItems: 'center',

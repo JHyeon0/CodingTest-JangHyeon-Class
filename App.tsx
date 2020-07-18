@@ -13,13 +13,19 @@ type StackParamList = {
     longitude: number;
     canIAdd: boolean;
   };
-  AddPlaceScreen: undefined;
-  SelectPlaceScreen: undefined;
-  ListPlaceScreen: undefined;
+  SelectPlaceScreen: {
+    currentLatitude: number;
+    currentLongitude: number;
+    currentLatitudeDelta: number;
+    currentLongitudeDelta: number;
+  };
+  AddPlaceScreen: {
+    latitudeInfo: number;
+    longitudeInfo: number;
+  }
 };
-const Stack = createStackNavigator<StackParamList>();
 
-//const Stack = createStackNavigator();
+const Stack = createStackNavigator<StackParamList>();
 
 
 
@@ -27,9 +33,9 @@ export default class App extends React.Component {
   render() {
       return (
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="HomeScreen" headerMode='none'>
+          <Stack.Navigator initialRouteName="HomeScreen" headerMode='none' >
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
-            <Stack.Screen name="SelectPlaceScreen" component={SelectPlaceScreen} />
+            <Stack.Screen name="SelectPlaceScreen" options={{animationEnabled: false}} component={SelectPlaceScreen} />
             <Stack.Screen name="AddPlaceScreen" component={AddPlaceScreen} />
           </Stack.Navigator>
         </NavigationContainer>
