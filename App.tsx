@@ -2,41 +2,22 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './src/Home';
-import SelectPlaceScreen from './src/SelctPlace'
 import AddPlaceScreen from './src/AddPlace'
+import { StackParamList } from './src/StackParamList';
 
-type StackParamList = {
-  HomeScreen: {
-    key: string;
-    placeName: string;
-    latitude: number;
-    longitude: number;
-    canIAdd: boolean;
-  };
-  SelectPlaceScreen: {
-    currentLatitude: number;
-    currentLongitude: number;
-    currentLatitudeDelta: number;
-    currentLongitudeDelta: number;
-  };
-  AddPlaceScreen: {
-    latitudeInfo: number;
-    longitudeInfo: number;
-  }
-};
+interface RoutesProps {}
 
 const Stack = createStackNavigator<StackParamList>();
 
 
 
-export default class App extends React.Component {
+export default class App extends React.Component<RoutesProps> {
   render() {
       return (
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="HomeScreen" headerMode='none' >
-            <Stack.Screen name="HomeScreen" component={HomeScreen} />
-            <Stack.Screen name="SelectPlaceScreen" options={{animationEnabled: false}} component={SelectPlaceScreen} />
-            <Stack.Screen name="AddPlaceScreen" component={AddPlaceScreen} />
+          <Stack.Navigator initialRouteName="HomeScreen">
+            <Stack.Screen name="HomeScreen" component={HomeScreen} options={{header:()=>null, headerTitle: '추가'}} />
+            <Stack.Screen name="AddPlaceScreen" component={AddPlaceScreen} options={{headerTitle: '추가'}}/>
           </Stack.Navigator>
         </NavigationContainer>
       );

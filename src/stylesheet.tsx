@@ -24,15 +24,14 @@ const styles = StyleSheet.create({
     showListContainer: {
         position: 'absolute',
         width: windowWidth,
-        height: windowHeight*0.3,
+        height: windowHeight*0.4,
         backgroundColor: 'white',
         bottom: 0,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    hideListContainer: {
-        width: 0,
-        height: 0,
+    hideContainer: {
+        display: 'none',
     },
     emptyList: {
         marginTop: windowHeight*0.10,
@@ -51,13 +50,13 @@ const styles = StyleSheet.create({
 
     ////////////   Button   ////////////
     openListButton: {
-        position: 'absolute', 
-        backgroundColor: 'white',
+        position: 'absolute',
+        bottom: 0,
         width: windowWidth,
         height: windowHeight*0.06,
-        bottom: 0,
-        alignItems: 'center',
+        backgroundColor: 'white',
         justifyContent: 'center',
+        alignItems: 'center',
     },
     closeListButton: {
         backgroundColor: '#FFBBAC',
@@ -68,31 +67,34 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     addPlaceButton_Home: {
-        backgroundColor: '#FFBBAC',
-        color: 'white',
-        padding: 10,
         position: 'absolute',
-        top: '80%',
-        alignSelf: 'flex-end'
+        bottom: '10%',
+        right: '7%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FFBBAC',
+        padding: 10,
     },
     cancelAddButton: {
-        backgroundColor: '#FFBBAC',
-        color: 'white',
-        padding: 10,
         position: 'absolute',
-        top: '80%',
-        alignSelf: 'flex-end'
+        bottom: '10%',
+        right: '7%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        paddingVertical: 5,
+        paddingHorizontal: 50,
     },
     addPlaceButton: {
-        backgroundColor: '#FFBBAC',
-        color: 'white',
-        padding: 10,
-        width: windowWidth,
-        height: windowHeight*0.06,
-        bottom: 0,
         position: 'absolute',
-        alignItems: 'center',
+        bottom: '10%',
+        left: '7%',
         justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FFBBAC',
+        padding: 10,
+        paddingVertical: 5,
+        paddingHorizontal: 50,
     },
     saveButton: {
         backgroundColor: '#FFBBAC',
@@ -105,18 +107,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    cancelSaveButton: {
-        backgroundColor: '#FFBBAC',
-        color: 'white',
-        padding: 10,
-        width: windowWidth,
-        height: windowHeight*0.2,
-        top: 0,
-        position: 'absolute',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-
 
  });
 
