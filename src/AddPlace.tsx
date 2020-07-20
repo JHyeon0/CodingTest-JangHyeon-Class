@@ -26,7 +26,12 @@ interface State{
 
 class AddPlaceScreen extends Component<AddPlaceProps>{
 
-    //AddPlaceScreen default state
+    /*
+        *** AddPlaceScreen state ***
+        newPlaceName : 사용자로부터 입력 받은 장소 이름 저장
+        latitude: 전 화면에서 marker로 선택한 latitude
+        longtitude: 전 화면에서 marker로 선택한 longitude
+    */
     state: State = {
         newPlaceName: '',
         latitude: 37.286162,

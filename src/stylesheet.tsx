@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
-
     ////////////   Button   ////////////
     openListButton: {
         position: 'absolute',

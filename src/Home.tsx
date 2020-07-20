@@ -39,6 +39,7 @@ interface State{
     showList: boolean;
     showListMarkers: boolean;
     coordinate: Coordinate;
+    canIAdd: boolean;
 }
 interface HomeScreen{
     map: MapView | null;
@@ -48,14 +49,13 @@ interface HomeScreen{
 
 
 class HomeScreen extends React.Component<HomeProps> {
-
-    // HomeScreen default state
     /*
+        *** HomeScreen state ***
         placeDataArray: 사용자가 저장한 장소 목록에 대한 정보
-        locationData: 현재 사용자가 
-        showList:
-        showListMarkers:
-        coordinate:
+        region: 현재 region 
+        showList: 목록 show/hide boolean
+        showListMarkers: markers show/hide boolean
+        coordinate: 현재 coordinate
     */
     state:State = {        
         placeDataArray:[],
@@ -71,6 +71,7 @@ class HomeScreen extends React.Component<HomeProps> {
         },
         showList: false,
         showListMarkers: true,
+        canIAdd: true,
     }
 
     //Update HomeScreen every 0.1 second
@@ -81,28 +82,21 @@ class HomeScreen extends React.Component<HomeProps> {
         clearInterval(this.interval);
     }
 
-    // props를 전달받거나, state가 변할 경우 이 함수를 실행한다.
-    // AddPlaceScreen에서 받아온 placeData를 state에 업데이트 시킨다.
+    /*
+        props를 전달받거나, state가 변할 경우 이 함수를 실행한다.
+        즉, AddPlaceScreen에서 받아온 placeData를 HomeScreen의 state에 업데이트 시킨다.
+    */ 
     static getDerivedStateFromProps(nextProps: Readonly<HomeProps>, prevState: State) {
-        /*===============================================================================
-            nextProps에 any를 사용하고 싶은 이유
-        =================================================================================
-            nextProps의 type은 Readonly<HomeProps>이다.
-            그러나 그렇게 할 경우 canIAdd의 값은 Readonly이기 때문에 변경할 수 없게 된다.
-            canIAdd의 값이 이 함수 내에서 변경하지 못한다면,
-            route.params로 받은 placeData가 무한히 list에 추가될 것이다.
-            만약 Readonly가 아니라 그냥 HomeProps로 할 경우
-        */
-
 
         //첫 실행에서 route.params가 undefined인 경우 이 함수 실행을 막는다.
         //또는 장소 이름을 누르고 state.locationData 변할 때 이 함수 실행을 막는다.
         //또한 params를 받고 나서도 매초 화면이 업데이트 되기에, canIAdd로 막아줄 필요가 있다.
-        //이러한 문제 때문에 추후 state 관리를 context로 바꿀 것이다.
         if(nextProps.route.params === undefined || !nextProps.route.params.canIAdd){
             return null;
         }
         else{
+            // readonly의 값을 변경해야 하는 문제가 발생.
+            // state 관리를 global하게 context로 한다면 이러한 문제가 해결될 것으로 보임.
             nextProps.route.params.canIAdd = false;
             const newCoordinate:Coordinate = {
                 latitude: nextProps.route.params.latitude,
@@ -143,10 +137,11 @@ class HomeScreen extends React.Component<HomeProps> {
             this.setState({ locationData: pressedPlaceName })
             this.setState({ coordinate: pressedCoordinate })
 
-            // map이 null일 때 PlaceNamePressHandler함수를 사용자가 사용할 방법은 없지만,
-            // 그래도 null일 때 animateToRegion 함수를 불러서는 안된다.
             if(this.map !== null){
                 this.map.animateToRegion(pressedPlaceName, 500)
+            }
+            else{
+                console.error("HomeScreen.map is null");
             }
             
         }
@@ -158,7 +153,7 @@ class HomeScreen extends React.Component<HomeProps> {
                 longitudeInfo: this.state.coordinate.longitude,
                 })
         }
-
+        
         // 장소 리스트 화면 on/off 토글러.
         const listViewToggler = () => {
             this.state.showList = !this.state.showList;
@@ -197,8 +192,10 @@ class HomeScreen extends React.Component<HomeProps> {
                 <TouchableOpacity 
                     style={this.state.showListMarkers?
                         styles.addPlaceButton_Home :
-                        styles.hideContainer} 
-                    onPress={ToggleMarker} >
+                        styles.hideContainer
+                    }
+                    onPress={ToggleMarker} 
+                >
                                 <Text>장소 추가</Text>
                 </TouchableOpacity>
 
